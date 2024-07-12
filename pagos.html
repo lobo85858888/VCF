@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VCF - Registrar Pagos</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
 </head>
 <body>
     <div class="container">
         <h1>Registrar Pagos</h1>
         <div class="transaction-input">
-            <input type="text" id="recipient" placeholder="Nombre del destinatario">
-            <input type="number" id="amount" placeholder="Cantidad de dinero">
-            <button id="savePaymentButton">Registrar Pago</button>
+            <input type="text" id="recipient" placeholder="Destinatario">
+            <input type="number" id="amount" placeholder="Cantidad">
+            <button id="savePaymentButton">Guardar Pago</button>
         </div>
         <a href="index.html" class="back-link">Volver</a>
     </div>
