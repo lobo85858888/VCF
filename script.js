@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 saveTransaction({ type: 'payment', recipient, amount });
                 document.getElementById('recipient').value = '';
                 document.getElementById('amount').value = '';
+            } else {
+                alert("Por favor, completa todos los campos de pago.");
             }
         });
     }
@@ -33,12 +35,14 @@ document.addEventListener('DOMContentLoaded', function () {
         saveWeaponButton.addEventListener('click', function () {
             const weapon = document.getElementById('weapon').value.trim();
             const quantity = document.getElementById('quantity').value.trim();
-            const recipient = document.getElementById('recipient').value.trim();
+            const recipient = document.getElementById('recipientWeapon').value.trim(); // Asegúrate de tener un input para el destinatario
             if (weapon !== "" && quantity !== "" && recipient !== "") {
                 saveTransaction({ type: 'weapon', weapon, quantity, recipient });
                 document.getElementById('weapon').value = '';
                 document.getElementById('quantity').value = '';
-                document.getElementById('recipient').value = '';
+                document.getElementById('recipientWeapon').value = '';
+            } else {
+                alert("Por favor, completa todos los campos de arma.");
             }
         });
     }
@@ -56,7 +60,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const transactionsRef = database.ref('transactions/');
         transactionsRef.on('value', (snapshot) => {
             const data = snapshot.val();
-            displayTransactions(data);
+            if (data) {
+                displayTransactions(data);
+            } else {
+                displayTransactions({}); // Si no hay datos, envía un objeto vacío
+            }
         });
     }
 
