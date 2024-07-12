@@ -1,0 +1,234 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+    background-image: url('bandera_mexico.jpg'); /* Fondo con la bandera de México */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.container {
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semi-transparente */
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Sombra más intensa */
+    padding: 40px;
+    width: 90%;
+    max-width: 700px;
+    text-align: center;
+    position: relative;
+    animation: fadeIn 1s ease-out;
+}
+
+h1 {
+    font-size: 3em; /* Tamaño grande para el título */
+    margin-bottom: 20px;
+    color: #1aff01; /* Texto blanco */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* Sombra para resaltar */
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.menu-link {
+    font-size: 1.5rem; /* Tamaño grande para los enlaces */
+    color: #fff;
+    background-color: rgba(206, 17, 38, 0.8); /* Rojo intenso */
+    padding: 15px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    border: 2px solid #fff; /* Borde blanco */
+}
+
+.menu-link:hover {
+    background-color: rgba(206, 17, 38, 1); /* Rojo aún más intenso al pasar el mouse */
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6); /* Sombra más pronunciada */
+}
+
+.transaction-input {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.transaction-input input {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2rem; /* Tamaño grande para los campos de entrada */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: border 0.3s, box-shadow 0.3s;
+}
+
+.transaction-input input:focus {
+    border-color: #fff;
+    outline: none;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.6); /* Sombra blanca al enfocar */
+}
+
+button {
+    padding: 12px 20px;
+    font-size: 1.2rem; /* Tamaño grande para los botones */
+    background-color: rgba(206, 17, 38, 0.8); /* Rojo intenso */
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+}
+
+button:hover {
+    background-color: rgba(206, 17, 38, 1); /* Rojo aún más intenso al pasar el mouse */
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6); /* Sombra más pronunciada */
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #fff;
+    text-decoration: none;
+    border: 2px solid #fff; /* Borde blanco */
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.back-link:hover {
+    background-color: rgba(206, 17, 38, 1); /* Rojo aún más intenso al pasar el mouse */
+    color: #fff;
+}
+
+#savedTransactions {
+    text-align: left;
+    color: #000000; /* Texto blanco */
+}
+
+#transactionsList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#transactionsList li {
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco semi-transparente */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 10px;
+    word-wrap: break-word;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: slideIn 0.5s ease-out;
+    transition: background-color 0.3s;
+}
+
+#transactionsList li:hover {
+    background-color: rgba(255, 255, 255, 1); /* Fondo blanco sólido al pasar el mouse */
+}
+
+.delete-button {
+    background-color: transparent;
+    border: none;
+    color: rgba(206, 17, 38, 0.8); /* Rojo intenso */
+    font-size: 1.2rem; /* Tamaño grande para el botón de eliminar */
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.delete-button:hover {
+    color: rgba(206, 17, 38, 1); /* Rojo aún más intenso al pasar el mouse */
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Estilos Responsivos */
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 2.5em;
+    }
+
+    .menu-link {
+        font-size: 1.2rem; /* Tamaño ajustado para dispositivos móviles */
+        padding: 12px;
+    }
+
+    button {
+        font-size: 1rem; /* Tamaño ajustado para dispositivos móviles */
+        padding: 10px 15px;
+    }
+
+    .transaction-input input {
+        font-size: 1rem; /* Tamaño ajustado para dispositivos móviles */
+    }
+}
+
+.transaction-input {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .transaction-input {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+#transactionsList li {
+    position: relative;
+    padding-right: 40px;
+}
+
+.delete-button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
