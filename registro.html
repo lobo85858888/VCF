@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VCF - Registro de Transacciones</title>
+    <title>VCF - Registro</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
 </head>
 <body>
     <div class="container">
         <h1>Registro de Transacciones</h1>
         <div id="savedTransactions">
-            <h2>Transacciones Registradas</h2>
+            <h2>Transacciones Guardadas</h2>
             <ul id="transactionsList"></ul>
         </div>
         <a href="index.html" class="back-link">Volver</a>
