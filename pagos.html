@@ -5,9 +5,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VCF - Registrar Pagos</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
-    <script src="script.js" type="text/javascript"></script>
+    <script type="module">
+        // Importa las funciones que necesitas de los SDK
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+        import { getDatabase, ref, set, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-database.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-analytics.js";
+
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyApGshIyzDs65kdUOM8pFC6I3wbRWHdI2g",
+            authDomain: "verdugo-crime-family.firebaseapp.com",
+            databaseURL: "https://verdugo-crime-family-default-rtdb.firebaseio.com",
+            projectId: "verdugo-crime-family",
+            storageBucket: "verdugo-crime-family.appspot.com",
+            messagingSenderId: "998047686059",
+            appId: "1:998047686059:web:7718c1312960c1e6f206ee",
+            measurementId: "G-9VCT40M5DS"
+        };
+
+        // Inicializa Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const database = getDatabase(app);
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const savePaymentButton = document.getElementById('savePaymentButton');
+            const saveWeaponButton = document.getElementById('saveWeaponButton');
+
+            if (savePaymentButton) {
+                savePaymentButton.addEventListener('click', function () {
+                    const recipient = document.getElementById('recipient').value.trim();
+                    const amount = document.getElementById('amount').value.trim();
+                    if (recipient !== "" && amount !== "") {
+                        saveTransaction({ type: 'payment', recipient, amount });
+                        document.getElementById('recipient').value = '';
+                        document.getElementById('amount').value = '';
+                    } else {
+                        alert("Por favor, completa todos los campos de pago.");
+                    }
+                });
+            }
+
+            if (saveWeaponButton) {
+                saveWeaponButton.addEventListener('click', function () {
+                    const weapon = document.getElementById('weapon').value.trim();
+                    const quantity = document.getElementById('quantity').value.trim();
+                    const recipient = document.getElementById('recipientWeapon').value.trim();
+                    if (weapon !== "" && quantity !== "" && recipient !== "") {
+                        saveTransaction({ type: 'weapon', weapon, quantity, recipient });
+                        document.getElementById('weapon').value = '';
+                        document.getElementById('quantity').value = '';
+                        document.getElementById('recipientWeapon').value = '';
+                    } else {
+                        alert("Por favor, completa todos los campos de arma.");
+                    }
+                });
+            }
+
+            loadTransactions();
+
+            function saveTransaction(transaction) {
+                const transactionRef = ref(database, 'transactions/' + Date.now());
+                set(transactionRef, transaction)
+                    .then(() => console.log('Transacción guardada con éxito'))
+                    .catch((error) => console.error('Error al guardar transacción:', error));
+            }
+
+            function loadTransactions() {
+                const transactionsRef = ref(database, 'transactions/');
+                onValue(transactionsRef, (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        displayTransactions(data);
+                    } else {
+                        displayTransactions({});
+                    }
+                });
+            }
+
+            function displayTransactions(data) {
+                const transactionsList = document.getElementById('transactionsList');
+                if (!transactionsList) return;
+
+                transactionsList.innerHTML = '';
+                for (let id in data) {
+                    const transaction = data[id];
+                    const transactionItem = document.createElement('li');
+                    if (transaction.type === 'payment') {
+                        transactionItem.textContent = `Pago de ${transaction.amount} a ${transaction.recipient}`;
+                    } else if (transaction.type === 'weapon') {
+                        transactionItem.textContent = `Arma: ${transaction.weapon}, Cantidad: ${transaction.quantity}, Destinatario: ${transaction.recipient}`;
+                    }
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.textContent = 'X';
+                    deleteButton.className = 'delete-button';
+                    deleteButton.addEventListener('click', function () {
+                        deleteTransaction(id);
+                    });
+
+                    transactionItem.appendChild(deleteButton);
+                    transactionsList.appendChild(transactionItem);
+                }
+            }
+
+            function deleteTransaction(id) {
+                const transactionRef = ref(database, 'transactions/' + id);
+                remove(transactionRef)
+                    .then(() => console.log('Transacción eliminada con éxito'))
+                    .catch((error) => console.error('Error al eliminar transacción:', error));
+            }
+        });
+    </script>
 </head>
 <body>
     <div class="container">
