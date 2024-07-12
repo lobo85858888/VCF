@@ -1,3 +1,18 @@
+// Configuración de Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyApGshIyzDs65kdUOM8pFC6I3wbRWHdI2g",
+    authDomain: "verdugo-crime-family.firebaseapp.com",
+    projectId: "verdugo-crime-family",
+    storageBucket: "verdugo-crime-family.appspot.com",
+    messagingSenderId: "998047686059",
+    appId: "1:998047686059:web:fc090dcf2b91fa1df206ee",
+    measurementId: "G-BCGD9KGS8G"
+};
+
+// Inicializa Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const database = firebase.database(app);
+
 document.addEventListener('DOMContentLoaded', function () {
     const savePaymentButton = document.getElementById('savePaymentButton');
     const saveWeaponButton = document.getElementById('saveWeaponButton');
@@ -31,23 +46,27 @@ document.addEventListener('DOMContentLoaded', function () {
     loadTransactions();
 
     function saveTransaction(transaction) {
-        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
-        transactions.push(transaction);
-        localStorage.setItem('transactions', JSON.stringify(transactions));
-        displayTransactions();
+        const transactionRef = database.ref('transactions/' + Date.now());
+        transactionRef.set(transaction)
+            .then(() => console.log('Transacción guardada con éxito'))
+            .catch((error) => console.error('Error al guardar transacción:', error));
     }
 
     function loadTransactions() {
-        displayTransactions();
+        const transactionsRef = database.ref('transactions/');
+        transactionsRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            displayTransactions(data);
+        });
     }
 
-    function displayTransactions() {
+    function displayTransactions(data) {
         const transactionsList = document.getElementById('transactionsList');
         if (!transactionsList) return;
 
-        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
         transactionsList.innerHTML = '';
-        transactions.forEach((transaction, index) => {
+        for (let id in data) {
+            const transaction = data[id];
             const transactionItem = document.createElement('li');
             if (transaction.type === 'payment') {
                 transactionItem.textContent = `Pago de ${transaction.amount} a ${transaction.recipient}`;
@@ -59,18 +78,18 @@ document.addEventListener('DOMContentLoaded', function () {
             deleteButton.textContent = 'X';
             deleteButton.className = 'delete-button';
             deleteButton.addEventListener('click', function () {
-                deleteTransaction(index);
+                deleteTransaction(id);
             });
 
             transactionItem.appendChild(deleteButton);
             transactionsList.appendChild(transactionItem);
-        });
+        }
     }
 
-    function deleteTransaction(index) {
-        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
-        transactions.splice(index, 1);
-        localStorage.setItem('transactions', JSON.stringify(transactions));
-        displayTransactions();
+    function deleteTransaction(id) {
+        const transactionRef = database.ref('transactions/' + id);
+        transactionRef.remove()
+            .then(() => console.log('Transacción eliminada con éxito'))
+            .catch((error) => console.error('Error al eliminar transacción:', error));
     }
 });
